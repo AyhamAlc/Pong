@@ -17,7 +17,7 @@ def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Pong")
     clock = pygame.time.Clock()
-    player_paddle  = Paddle(20, 80, 10, 40,100)
+   
     
     # 1. Run Menu
     action = menu.show_menu(screen, clock)
@@ -31,12 +31,11 @@ def main():
         print("Starting the game...")
         # TODO: Initialize Paddles, Ball, and Game Loop here
         # (Insert your friend's paddle logic and ball logic here)
+        player_paddle  = Paddle(20, 80, 10, 40, 100)
         game_ball = ball()
         game_field = GameField(0, 0, WIDTH, HEIGHT)
         running = True
         dt = 0
-        player_paddle.update(pygame.key.get_pressed(), screen.get_rect())
-        player_paddle.draw(screen)
         # --- Temporary placeholder loop so you can see it works ---
         while running:
             for event in pygame.event.get():
@@ -47,6 +46,8 @@ def main():
             # Draw game objects 
             game_field.draw(screen)
             goal_side = game_field.check_goal(game_ball)
+            player_paddle.update(pygame.key.get_pressed(), screen.get_rect())
+            player_paddle.draw(screen)
 
             if goal_side == 'left':
                 result = game_over_screen(screen, "Game Over")
@@ -64,7 +65,7 @@ def main():
                 else: 
                     running = False
                     break
-            game_ball.ball_movement()
+            #game_ball.ball_movement()
             game_ball.draw(screen)
             pygame.display.flip()
             clock.tick(FPS)
