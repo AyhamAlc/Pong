@@ -28,7 +28,9 @@ class GameField:
         """Return "left" or "right" if the ball crossed that border, else None."""
         if ball.x - ball.radius <= self.rect.left:
             return "left"
-        if ball.x + ball.radius >= self.rect.right:
-            return "right"
+
+        # Removed the right goal check to allow for a third wall collision detection instead of a goal on the right side. Will implement it back when we have a second player.
+        #if ball.x + ball.radius >= self.rect.right:
+            #return "right"
         return None
     

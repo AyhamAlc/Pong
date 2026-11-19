@@ -8,6 +8,7 @@ from Models.ball import ball
 from Models.field import GameField
 from Models.game_over import game_over_screen
 from Models.paddle import Paddle
+from Models.game import collision_detection, third_wall_collision_detection, wall_collision_detection
 
 def main():
     """
@@ -31,7 +32,7 @@ def main():
         print("Starting the game...")
         # TODO: Initialize Paddles, Ball, and Game Loop here
         # (Insert your friend's paddle logic and ball logic here)
-        player_paddle  = Paddle(20, 80, 10, 40, 100)
+        player_paddle  = Paddle(20, 100, 10, 40, 350)
         game_ball = ball()
         game_field = GameField(0, 0, WIDTH, HEIGHT)
         running = True
@@ -48,9 +49,12 @@ def main():
             goal_side = game_field.check_goal(game_ball)
             player_paddle.update(pygame.key.get_pressed(), screen.get_rect())
             player_paddle.draw(screen)
+            collision_detection(game_ball, player_paddle)
+            wall_collision_detection(game_ball, game_field)
+            third_wall_collision_detection(game_ball, game_field)
 
             if goal_side == 'left':
-                result = game_over_screen(screen, "Game Over")
+                result = game_over_screen(screen, "Right player")
                 if result == 'RESTART':
                     game_ball.reset()
                     continue
@@ -58,14 +62,14 @@ def main():
                     running = False
                     break
             elif goal_side == 'right':
-                result = game_over_screen(screen, "You win")
+                result = game_over_screen(screen, "Left player")
                 if result == 'RESTART':
                     game_ball.reset()
                     continue
                 else: 
                     running = False
                     break
-            #game_ball.ball_movement()
+            game_ball.ball_movement()
             game_ball.draw(screen)
             pygame.display.flip()
             clock.tick(FPS)
