@@ -3,10 +3,11 @@
 # Contains the start menu loop with an option to start or exit.
 import pygame
 from Shared.settings import WIDTH, HEIGHT, FPS, BG_COLOR
-from menu import Menu
+import menu
 from Models.ball import ball
 from Models.field import GameField
 from Models.game_over import game_over_screen
+from Models.paddle import Paddle
 
 def main():
     """
@@ -16,10 +17,10 @@ def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Pong")
     clock = pygame.time.Clock()
+    player_paddle  = Paddle(20, 80, 10, 40,100)
     
     # 1. Run Menu
-    menu = Menu(screen)
-    action = menu.run()
+    action = menu.show_menu(screen, clock)
     
     # 2. Handle action
     if action == 'QUIT':
@@ -34,6 +35,8 @@ def main():
         game_field = GameField(0, 0, WIDTH, HEIGHT)
         running = True
         dt = 0
+        player_paddle.update(pygame.key.get_pressed(), screen.get_rect())
+        player_paddle.draw(screen)
         # --- Temporary placeholder loop so you can see it works ---
         while running:
             for event in pygame.event.get():
